@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot name="minicar">
+   <gazebo>
+     <!--Plugin loads hardware interfaces and controller manager -->
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+         <robotNamespace>/$(arg robot_name)/joints</robotNamespace>
+         <robotParam>/$(arg robot_name)/robot_description</robotParam>
+         <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+         <controlPeriod>$(arg control_period)</controlPeriod>
+         <!--<controlPeriod> </controlPeriod>-->
+      </plugin>
+   </gazebo>
+
+      <transmission name="rwheel_link_transmission">
+         <type>transmission_interface/SimpleTransmission</type>
+         <joint name="rwheel_link">
+            <hardwareInterface>hardware_interface/$(arg motors_controller_type)</hardwareInterface>
+         </joint>
+         <actuator name="rwheel_link_actuator">
+            <hardwareInterface>hardware_interface/$(arg motors_controller_type)</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+         </actuator>
+      </transmission>
+
+      <transmission name="lwheel_link_transmission">
+         <type>transmission_interface/SimpleTransmission</type>
+         <joint name="lwheel_link">
+            <hardwareInterface>hardware_interface/$(arg motors_controller_type)</hardwareInterface>
+         </joint>
+         <actuator name="lwheel_link_actuator">
+            <hardwareInterface>hardware_interface/$(arg motors_controller_type)</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+         </actuator>
+      </transmission>
+
+    <gazebo>
+      <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+        <frameName>world</frameName>
+        <bodyName>base_link</bodyName>
+        <topicName>/gazebo/$(arg robot_name)/odom</topicName>
+        <updateRate>100.0</updateRate>
+      </plugin>
+    </gazebo>
+
+
+
+ <gazebo reference="base_link">
+ <material>Gazebo/Brown</material>
+ </gazebo>
+ 
+ <gazebo reference="rwheel_link">
+ <material>Gazebo/Black</material>
+ <mu1 value="1e+10"/>
+ <mu2 value="1e+15"/>
+ <kp value="500000.0" />
+ <kd value="1.0" />
+ <maxVel value="0.1" />
+ <minDepth value="0.0" />
+ </gazebo>
+
+ <gazebo reference="lwheel_link">
+ <material>Gazebo/Black</material>
+ <mu1 value="1e+10"/>
+ <mu2 value="1e+15"/>
+ <kp value="500000.0" />
+ <kd value="1.0" />
+ <maxVel value="0.1" />
+ <minDepth value="0.0" />
+ </gazebo>
+
+
+
+    <gazebo reference="base_footprint">
+        <sensor name="imu" type="imu">
+            <imu/>
+            <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+            <robotNamespace/>
+            <frameName>imu_link</frameName>
+            <topicName>/$(arg robot_name)/sensor/imu</topicName>
+            <updateRateHZ>200.0</updateRateHZ>
+            <gaussianNoise>0.000</gaussianNoise>
+            <xyzOffset>0.0 0.0 0.0</xyzOffset>
+            <rpyOffset>0.0 0.0 0.0</rpyOffset>
+            </plugin>
+       </sensor>
+    </gazebo>
+
+</robot>
+

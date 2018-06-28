@@ -1,0 +1,8 @@
+prefix=/home/yo1/minicarcy/devel
+
+Name: minicarcy
+Description: Description of minicarcy
+Version: 0.0.0
+Cflags: -I/home/yo1/minicarcy/src/minicarcy/include
+Libs: -L/home/yo1/minicarcy/devel/lib -lminicarcy
+Requires: 

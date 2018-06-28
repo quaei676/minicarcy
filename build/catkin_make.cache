@@ -1,0 +1,2 @@
+minicar:minicarcy
+-DCATKIN_DEVEL_PREFIX=/home/yo1/minicarcy/devel -DCMAKE_INSTALL_PREFIX=/home/yo1/minicarcy/install -G Unix Makefiles

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <arg name="motors_controller_type" default="VelocityJointInterface" /> <!-- PositionJointInterface, velocity, position -->
+
+
+  <group if="$(eval arg('motors_controller_type') =='VelocityJointInterface')">
+
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+   <rosparam file="$(find minicarcy)/config/wheel_velocity_controllers.yaml" command="load"/>
+
+     <!-- load the position controllers -->
+    <node name="wheel_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+    args="lwheel_velocity_controller rwheel_velocity_controller  --shutdown-timeout 2" />
+  </group>
+
+  <group if="$(eval arg('motors_controller_type') =='EffortJointInterface')">
+
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+   <rosparam file="$(find minicarcy)/config/wheel_effort_controllers.yaml" command="load"/>
+
+     <!-- load the position controllers -->
+    <node name="wheel_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+    args="lwheel_effort_controller rwheel_effort_controller  --shutdown-timeout 2" />
+  </group>
+
+</launch>

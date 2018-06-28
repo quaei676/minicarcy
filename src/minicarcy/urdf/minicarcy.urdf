@@ -1,0 +1,383 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+  xmlns:interface="http://ros.org/wiki/xacro"
+  xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+  name="minicarcy">
+  <include filename="$(find minicarcy)/urdf/test.gazebo"/>
+   <!-- dynamixel: XM430-W350-T: see performance graph the effort depends on current, efficiency(E), torque : -->
+   <!-- http://simplemotor.com/calculations/ τ = (I * V * E *60) / (rpm * 2π) -->
+   <property name="XM430_W350_R_max_effort" value="3.5" />    <!-- acc. to datasheet should be 3.8Nm at 11.1V-->
+   <property name="XM430_W350_R_max_velocity" value="4.5" /> 
+   <property name="wheel_joint_damping" value="0.01" />    <!-- 0.01 sollte: 0.5 -->
+   <property name="wheel_joint_friction" value="0.05" />     <!-- 0.05 sollte: 1.0 -->
+
+  <link name="base_footprint" />
+      <joint name="body_link" type="fixed">
+         <parent link="base_footprint" />
+         <child link="base_link" />
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      </joint>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="7.6681E-05 -8.173E-17 -0.032742"
+        rpy="0 0 0" />
+      <mass
+        value="0.6" />
+      <inertia
+        ixx="0.0073125"
+        ixy="-3.1171E-18"
+        ixz="7.564E-19"
+        iyy="0.0289125"
+        iyz="-1.6608E-07"
+        izz="0.036" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="rwheel_link">
+    <inertial>
+      <origin
+        xyz="4.269E-18 -0.0075 6.9389E-18"
+        rpy="0 0 0" />
+      <mass
+        value="0.031705" />
+      <inertia
+        ixx="1.085E-05"
+        ixy="1.2359E-22"
+        ixz="-7.8468E-07"
+        iyy="2.1775E-05"
+        iyz="2.8473E-23"
+        izz="1.2114E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/rwheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/rwheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rwheel_link"
+    type="continuous">
+    <origin
+      xyz="7.66809557912923E-05 -0.0650000000000001 -0.0379499466865908"
+      rpy="1.25960332261232E-32 2.16840434497101E-19 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rwheel_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="${XM430_W350_R_max_effort}" velocity="${XM430_W350_R_max_velocity}" />
+    <dynamics friction="${wheel_joint_friction}" damping="${wheel_joint_damping}" />
+  </joint>
+  <link
+    name="lwheel_link">
+    <inertial>
+      <origin
+        xyz="3.23905399030044E-18 0.00750000000000001 -6.93889390390723E-18"
+        rpy="0 0 0" />
+      <mass
+        value="0.031705057315989" />
+      <inertia
+        ixx="1.07244342707348E-05"
+        ixy="2.1553438191555E-22"
+        ixz="-6.63990807284671E-07"
+        iyy="2.17752005966286E-05"
+        iyz="8.00824297584895E-22"
+        izz="1.22397059752434E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/lwheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/lwheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lwheel_link"
+    type="continuous">
+    <origin
+      xyz="7.66809557912553E-05 0.0649999999999999 -0.0379499466865908"
+      rpy="1.25960332261232E-32 2.16840434497101E-19 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lwheel_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="${XM430_W350_R_max_effort}" velocity="${XM430_W350_R_max_velocity}" />
+    <dynamics friction="${wheel_joint_friction}" damping="${wheel_joint_damping}" />
+  </joint>
+  <link
+    name="subball1_link">
+    <inertial>
+      <origin
+        xyz="8.30371055720466E-17 -2.77555756156289E-17 -0.01"
+        rpy="0 0 0" />
+      <mass
+        value="0.00418879020478639" />
+      <inertia
+        ixx="1.67551608191456E-07"
+        ixy="0"
+        ixz="0"
+        iyy="1.67551608191456E-07"
+        iyz="0"
+        izz="1.67551608191456E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="subball1_link"
+    type="fixed">
+    <origin
+      xyz="0.100076694089152 0 -0.168466153692372"
+      rpy="1.57241702808248 1.15648231731787E-16 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="subball1_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="subball2_link">
+    <inertial>
+      <origin
+        xyz="8.30371055720466E-17 0 0.01"
+        rpy="0 0 0" />
+      <mass
+        value="0.00418879020478639" />
+      <inertia
+        ixx="1.67551608191456E-07"
+        ixy="0"
+        ixz="0"
+        iyy="1.67551608191456E-07"
+        iyz="0"
+        izz="1.67551608191456E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="subball2_link"
+    type="fixed">
+    <origin
+      xyz="-0.0999233321775692 0 -0.16843373968081"
+      rpy="1.57241702808248 1.15648231731787E-16 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="subball2_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="subball3_link">
+    <inertial>
+      <origin
+        xyz="0 0 0.000194705370310178"
+        rpy="0 0 0" />
+      <mass
+        value="0.000523598775598299" />
+      <inertia
+        ixx="5.23598775598299E-09"
+        ixy="0"
+        ixz="0"
+        iyy="5.23598775598299E-09"
+        iyz="0"
+        izz="5.23598775598299E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball3_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="subball3_link"
+    type="fixed">
+    <origin
+      xyz="0.000271386070387844 -0.125 -0.167449631127485"
+      rpy="1.57241702808248 1.15648231731787E-16 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="subball3_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="subball4_link">
+    <inertial>
+      <origin
+        xyz="-1.38777878078145E-17 0 0.000202808873200552"
+        rpy="0 0 0" />
+      <mass
+        value="0.000523598775598299" />
+      <inertia
+        ixx="5.23598775598299E-09"
+        ixy="0"
+        ixz="0"
+        iyy="5.23598775598299E-09"
+        iyz="0"
+        izz="5.23598775598299E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball4_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/subball4_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="subball4_link"
+    type="fixed">
+    <origin
+      xyz="0.000279489562635596 0.125 -0.172449617994133"
+      rpy="1.57241702808248 1.15648231731787E-16 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="subball4_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>

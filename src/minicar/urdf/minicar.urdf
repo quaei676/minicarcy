@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+  xmlns:interface="http://ros.org/wiki/xacro"
+  xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+  name="minicar">
+
+  <include filename="$(find minicar)/urdf/test.gazebo"/>
+
+   <!-- dynamixel: XM430-W350-T: see performance graph the effort depends on current, efficiency(E), torque : -->
+   <!-- http://simplemotor.com/calculations/ τ = (I * V * E *60) / (rpm * 2π) -->
+   <property name="XM430_W350_R_max_effort" value="3.5" />    <!-- acc. to datasheet should be 3.8Nm at 11.1V-->
+   <property name="XM430_W350_R_max_velocity" value="4.5" /> 
+   <property name="wheel_joint_damping" value="0.01" />    <!-- 0.01 sollte: 0.5 -->
+   <property name="wheel_joint_friction" value="0.05" />     <!-- 0.05 sollte: 1.0 -->
+
+  <link name="base_footprint" />
+      <joint name="body_link" type="fixed">
+         <parent link="base_footprint" />
+         <child link="base_link" />
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      </joint>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="5.5766E-18 2.1094E-17 -0.0014331"
+        rpy="0 0 0" />
+      <mass
+        value="0.6" />
+      <inertia
+        ixx="0.0073125"
+        ixy="0"
+        ixz="0"
+        iyy="0.0289125"
+        iyz="0"
+        izz="0.036" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicar/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicar/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="rwheel_link">
+    <inertial>
+      <origin
+        xyz="-2.2465E-06 -0.0075165 -1.6385E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.033596" />
+      <inertia
+        ixx="1.09187E-05"
+        ixy="-5.4345E-10"
+        ixz="2.2591E-07"
+        iyy="1.09187E-05"
+        iyz="-3.9682E-09"
+        izz="2.057755E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicar/meshes/rwheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicar/meshes/rwheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rwheel_link"
+    type="continuous">
+    <origin
+      xyz="0 -0.065 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rwheel_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="${XM430_W350_R_max_effort}" velocity="${XM430_W350_R_max_velocity}" />
+    <dynamics friction="${wheel_joint_friction}" damping="${wheel_joint_damping}" />
+  </joint>
+  <link
+    name="lwheel_link">
+    <inertial>
+      <origin
+        xyz="-1.0223E-05 0.0075165 -1.3E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.033596" />
+      <inertia
+        ixx="1.09187E-05"
+        ixy="-5.4345E-10"
+        ixz="2.2591E-07"
+        iyy="1.09187E-05"
+        iyz="-3.9682E-09"
+        izz="2.057755E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicar/meshes/lwheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicar/meshes/lwheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lwheel_link"
+    type="continuous">
+    <origin
+      xyz="0 0.065 -0.038"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lwheel_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit effort="${XM430_W350_R_max_effort}" velocity="${XM430_W350_R_max_velocity}" />
+    <dynamics friction="${wheel_joint_friction}" damping="${wheel_joint_damping}" />
+  </joint>
+</robot>

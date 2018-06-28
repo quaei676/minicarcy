@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- these are the arguments you can pass this launch file-->
+
+  <!-- choose sensors to be used: -->
+
+  <arg name="robot_name" default="minicarcy" />
+  <arg name="ground_truth" default="False" />
+  <arg name="motors_controller_type" default="EffortJointInterface" /> <!-- PositionJointInterface, VelocityJointInterface, EffortJointInterface -->
+  <arg name="imu_update_rate" default="100" />
+  <arg name="control_period" default="0.01" />
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <!-- yoooooooooooooooooooooooooooooooooooooooooo -->
+  <param name="robot_description" command="python $(find xacro)/xacro --inorder '$(find minicarcy)/urdf/minicarcy.urdf'
+    robot_name:=$(arg robot_name)
+    ground_truth:=$(arg ground_truth)
+    motors_controller_type:=$(arg motors_controller_type)
+    imu_update_rate:=$(arg imu_update_rate)
+    control_period:=$(arg control_period)"
+    />
+
+</launch>

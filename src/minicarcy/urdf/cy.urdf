@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot
+  name="cy">
+  <include filename="$(find minicarcy)/urdf/cy.gazebo"/>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="1.9491E-18 -7.1898E-18 0"
+        rpy="0 0 0" />
+      <mass
+        value="3.0" />
+      <inertia
+        ixx="0.0296"
+        ixy="1.9527E-34"
+        ixz="0"
+        iyy="0.04"
+        iyz="-1.7485E-34"
+        izz="0.0296" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/cy_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minicarcy/meshes/cy_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

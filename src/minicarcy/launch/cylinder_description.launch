@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- these are the arguments you can pass this launch file-->
+
+
+
+  <arg name="robot_name" default="cy" />
+  <arg name="ground_truth" default="False" />
+
+
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <!-- yoooooooooooooooooooooooooooooooooooooooooo -->
+  <param name="robot_description" command="python $(find xacro)/xacro --inorder '$(find minicarcy)/urdf/cy.urdf'
+    robot_name:=$(arg robot_name)
+    ground_truth:=$(arg ground_truth)"
+    />
+
+</launch>

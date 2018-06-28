@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot name="cy">
+    <gazebo>
+      <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+        <frameName>world</frameName>
+        <bodyName>base_link</bodyName>
+        <topicName>/gazebo/$(arg robot_name)/odom</topicName>
+        <updateRate>100.0</updateRate>
+      </plugin>
+    </gazebo>
+
+ 
+ <gazebo reference="base_link">
+      <gravity>1</gravity>
+      <material>Gazebo/Green</material>
+      <maxVel>0.01</maxVel>
+      <minDepth>0</minDepth>
+      <mu1>1e+13</mu1>
+      <mu2>1e+13</mu2>
+      <fdir1>0 0 0</fdir1>
+      <kp>1e+15</kp>
+      <kd>1.0</kd>
+      <selfCollide>0</selfCollide>
+      <maxContacts>10</maxContacts>
+ </gazebo>
+
+
+
+</robot>
+
