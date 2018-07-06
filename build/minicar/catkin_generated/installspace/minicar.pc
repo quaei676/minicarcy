@@ -1,8 +1,0 @@
-prefix=/home/yo1/minicarcy/install
-
-Name: minicar
-Description: Description of minicar
-Version: 0.0.0
-Cflags: -I/home/yo1/minicarcy/install/include
-Libs: -L/home/yo1/minicarcy/install/lib -lminicar
-Requires: 
